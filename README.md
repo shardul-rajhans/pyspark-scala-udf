@@ -28,8 +28,8 @@ This project demonstrates efficient way of writing custom UDFs in PySpark. Also,
 - This approach will keep the execution of UDFs in JVM only, and reduces PythonProcess-JVM communications for data serialization and deserialization, which improves the performance almost 15 times.
 
 ## Performance Benchmark of Spark UDF Implementations
-- This project used a generic example for implementing UDFs in Python by calling Scala Code. The actual performance benchmark is carried on a production level code and results are mentioned below. 
-- Performance evaluation is done on Spark 3.3.0 on EMR Cluster with 3 worker nodes of 'm5d.2xlarge' (24 cores).
+- This project used a generic example for implementing UDFs in Python by calling Scala Code. The actual performance benchmark was carried out on a production code and results are mentioned below. 
+- Performance evaluation was done on Spark 3.3.0 on EMR Cluster with 3 worker nodes of 'm5d.2xlarge' (24 cores).
 - Input dataset used was ~1.5GB and had over 10 million rows.
 ![alt text](Performance_Metrics.png)
 
@@ -58,4 +58,6 @@ reverseAddressUdf = UDFBuilder().forReverseAddress()
 reverseAddressUdfResult = inputDf.withColumn("concat_result", UDFExecutor().apply(reverseAddressUdf, col("CompleteAddress")))
 ```
 
-
+## Conclusion:
+1. UDFs should be implemented in Spark only when it's necessary to use custom functions.
+2. <b>Python UDFs referencing scala classes has a performance boost as compared to other techniques of writing Python UDFs. However, this might require understanding of both the languages and bridging between them.</b>
